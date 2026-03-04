@@ -1,3 +1,4 @@
+import { useState } from "react";
 import paybisLogo from './assets/paybis.webp';
 
 type ResultRowProps = {
@@ -7,19 +8,21 @@ type ResultRowProps = {
 };
 
 type Logo = {
-  source:string,
-  invert?:boolean
+  source: string,
+  invert?: boolean
 };
-const logos:{[keys:string]:Logo} = {
-  paybis: {source:paybisLogo,invert:true},
-  guardarian: {source:'https://guardarian.com/main-logo.svg'},
-  moonpay:{source:'https://www.moonpay.com/assets/logo-full-white.svg'},
-  transak:{source:'https://assets.transak.com/images/website/transak-logo-white.svg'},
+const logos: { [keys: string]: Logo } = {
+  paybis: { source: paybisLogo, invert: true },
+  guardarian: { source: 'https://guardarian.com/main-logo.svg' },
+  moonpay: { source: 'https://www.moonpay.com/assets/logo-full-white.svg' },
+  transak: { source: 'https://assets.transak.com/images/website/transak-logo-white.svg' },
 };
 
 export default function ResultRow({
   loading, providerName, btc
-}:ResultRowProps) {
+}: ResultRowProps) {
+  const [imgError, setImgError] = useState(false);
+
   let url = `http://${providerName}.com`;
   if (providerName === 'guardarian') {
     url += '/buy-btc';
@@ -32,24 +35,15 @@ export default function ResultRow({
       <div className="flex gap-4">
         {providerName && (
           <div className="grow items-center flex">
-            {logos[providerName]?.source ? (
-              <>
-                <img
-                  src={logos[providerName].source}
-                  className={
-                    "h-8 " + (logos[providerName]?.invert ? 'invert' : '')
-                  }
-                  alt={providerName}
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none';
-                    const fallback = e.currentTarget.nextElementSibling as HTMLElement;
-                    if (fallback) fallback.style.display = 'block';
-                  }}
-                />
-                <span className="text-white font-bold text-xl capitalize tracking-wider" style={{ display: 'none' }}>
-                  {providerName}
-                </span>
-              </>
+            {logos[providerName]?.source && !imgError ? (
+              <img
+                src={logos[providerName].source}
+                className={
+                  "h-8 " + (logos[providerName]?.invert ? 'invert' : '')
+                }
+                alt={providerName}
+                onError={() => setImgError(true)}
+              />
             ) : (
               <span className="text-white font-bold text-xl capitalize tracking-wider">
                 {providerName}
@@ -60,7 +54,7 @@ export default function ResultRow({
         {btc && (
           <div className="flex gap-2">
             <span className="text-xl text-purple-200/80">
-              { new Intl.NumberFormat('sv-SE', {minimumFractionDigits:8}).format(parseFloat(btc))}
+              {new Intl.NumberFormat('sv-SE', { minimumFractionDigits: 8 }).format(parseFloat(btc))}
             </span>
             <span className="text-xl text-purple-300/50">BTC</span>
           </div>
