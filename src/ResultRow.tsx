@@ -1,5 +1,6 @@
 import { useState } from "react";
 import paybisLogo from './assets/paybis.webp';
+import moonpayLogo from './assets/moonpay.svg';
 
 type ResultRowProps = {
   loading?: boolean;
@@ -14,7 +15,7 @@ type Logo = {
 const logos: { [keys: string]: Logo } = {
   paybis: { source: paybisLogo, invert: true },
   guardarian: { source: 'https://guardarian.com/main-logo.svg' },
-  moonpay: { source: 'https://www.moonpay.com/assets/logo-full-white.svg' },
+  moonpay: { source: moonpayLogo },
   transak: { source: 'https://assets.transak.com/images/website/transak-logo-white.svg' },
 };
 

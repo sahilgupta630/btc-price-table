@@ -14,7 +14,7 @@ async function getOfferFromPaybis(amount) {
             "requestedAmountType": "from",
             "promoCode": null,
             "paymentMethod": "credit-card"
-        });
+        }, { timeout: 2000 });
         return res.data?.paymentMethods?.[0]?.amountTo?.amount.toString();
     } catch (e) {
         console.error('Paybis error:', e.message);
@@ -29,7 +29,8 @@ async function getOfferFromGuardarian(amount) {
             {
                 headers: {
                     'X-Api-Key': 'c14d927f-cb01-4561-9520-28ec22c92710',
-                }
+                },
+                timeout: 2000
             }
         );
         return res?.data?.value?.toString();
@@ -41,7 +42,7 @@ async function getOfferFromGuardarian(amount) {
 
 async function getOfferFromMoonpay(amount) {
     try {
-        const res = await axios.get(`https://api.moonpay.com/v3/currencies/btc/buy_quote?apiKey=pk_live_R5Lf25uBfNZyKwccAZpzcxuL3ZdJ3Hc&baseCurrencyAmount=${amount}&baseCurrencyCode=usd&fixed=true&areFeesIncluded=true&regionalPricing=true&quoteType=principal`);
+        const res = await axios.get(`https://api.moonpay.com/v3/currencies/btc/buy_quote?apiKey=pk_live_R5Lf25uBfNZyKwccAZpzcxuL3ZdJ3Hc&baseCurrencyAmount=${amount}&baseCurrencyCode=usd&fixed=true&areFeesIncluded=true&regionalPricing=true&quoteType=principal`, { timeout: 2000 });
         return res?.data?.quoteCurrencyAmount?.toString();
     } catch (e) {
         console.error('Moonpay error:', e.message);
@@ -51,7 +52,7 @@ async function getOfferFromMoonpay(amount) {
 
 async function getOfferFromTransak(amount) {
     try {
-        const res = await axios.get(`https://api.transak.com/api/v1/pricing/public/quotes?fiatCurrency=USD&cryptoCurrency=BTC&paymentMethod=credit_debit_card&isBuyOrSell=BUY&fiatAmount=${amount}&partnerApiKey=02624956-010b-4775-8e31-7b9c8b82df76&network=mainnet`);
+        const res = await axios.get(`https://api.transak.com/api/v1/pricing/public/quotes?fiatCurrency=USD&cryptoCurrency=BTC&paymentMethod=credit_debit_card&isBuyOrSell=BUY&fiatAmount=${amount}&partnerApiKey=02624956-010b-4775-8e31-7b9c8b82df76&network=mainnet`, { timeout: 2000 });
         return res?.data?.response?.cryptoAmount?.toString();
     } catch (e) {
         console.error('Transak error:', e.message);
