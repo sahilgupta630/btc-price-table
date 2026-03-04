@@ -21,7 +21,7 @@ export default function ResultRow({
   loading, providerName, btc
 }:ResultRowProps) {
   let url = `http://${providerName}.com`;
-  if (providerName === 'guardian') {
+  if (providerName === 'guardarian') {
     url += '/buy-btc';
   }
   return (
@@ -32,12 +32,29 @@ export default function ResultRow({
       <div className="flex gap-4">
         {providerName && (
           <div className="grow items-center flex">
-            <img
-              src={logos[providerName].source}
-              className={
-                "h-8 "+(logos[providerName]?.invert ? 'invert' : '')
-              }
-              alt=""/>
+            {logos[providerName]?.source ? (
+              <>
+                <img
+                  src={logos[providerName].source}
+                  className={
+                    "h-8 " + (logos[providerName]?.invert ? 'invert' : '')
+                  }
+                  alt={providerName}
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none';
+                    const fallback = e.currentTarget.nextElementSibling as HTMLElement;
+                    if (fallback) fallback.style.display = 'block';
+                  }}
+                />
+                <span className="text-white font-bold text-xl capitalize tracking-wider" style={{ display: 'none' }}>
+                  {providerName}
+                </span>
+              </>
+            ) : (
+              <span className="text-white font-bold text-xl capitalize tracking-wider">
+                {providerName}
+              </span>
+            )}
           </div>
         )}
         {btc && (
